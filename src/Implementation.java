@@ -60,7 +60,7 @@ public class Implementation implements MineSweeper {
 		if (initialized == false) {
 			throw new IllegalStateException("setMineField was not initalized");
 		}
-		// we nned to get through all elements and search mine
+		// we need to get through all elements and search mine
 		for (int x = 0; x < rows; x++) {
 			for (int y = 0; y < columns; y++) {
 				if (tab[x][y] == 9) {
