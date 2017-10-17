@@ -15,7 +15,8 @@ public class Implementation implements MineSweeper {
 
 		if (helpField.length() < 4) // checking if we can do actually a field from input
 			throw new IllegalArgumentException("wrong data in method argument length field is < 4");
-		String[] i = mineField.split("(?<!\\\\)\\\\n");
+		String[] i = mineField.split("(?<!\\\\)\\\\n"); // split mineField in '\n' place using regular expression to a
+														// string array
 		rows = i.length;
 		if (i.length <= 1) { // checking if we can do actually a field from input
 			throw new IllegalArgumentException("wrong data in method argument, cannot create a 1 row field");
