@@ -7,6 +7,8 @@ public class Implementation implements MineSweeper {
 	private int rows = 0, columns = 0;
 	private int[][] tab;
 
+	// setMineField method wll be mostly checking if our input data is OK and
+	// creating int array from string input
 	public void setMineField(String mineField) throws IllegalArgumentException {
 		String t = "", help = "";
 		String helpField = mineField;
@@ -50,6 +52,7 @@ public class Implementation implements MineSweeper {
 		initialized = true;
 	}
 
+	// getHintField method will initialize a hint-field from input data
 	public String getHintField() throws IllegalStateException {
 		String n = "";
 		Scanner scan = new Scanner(System.in);
