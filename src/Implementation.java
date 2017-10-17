@@ -1,123 +1,94 @@
 import java.util.Scanner;
 
+//Implementation of MineSweeper interface, all details on MineSweeper interface
+
 public class Implementation implements MineSweeper {
 	private boolean initialized = false;
-	int rows = 0, columns = 0;
-	int[][] tab;
+	private int rows = 0, columns = 0;
+	private int[][] tab;
 
 	public void setMineField(String mineField) throws IllegalArgumentException {
 		String t = "", help = "";
 		String helpField = mineField;
 
-		if (helpField.length() < 4)
-			throw new IllegalArgumentException("wrong data in method argument");
+		if (helpField.length() < 4) // checking if we can do actually a field from input
+			throw new IllegalArgumentException("wrong data in method argument length field is < 4");
 		String[] i = mineField.split("(?<!\\\\)\\\\n");
 		rows = i.length;
-		// System.out.println(rows);
-		if (i.length <= 1) {
-			throw new IllegalArgumentException("wrong data in method argument");
+		if (i.length <= 1) { // checking if we can do actually a field from input
+			throw new IllegalArgumentException("wrong data in method argument, cannot create a 1 row field");
 		}
 		t = i[0];
-		columns = t.length();
+		columns = t.length(); // assign a number of columns in our field
 		for (int x = 0; x < i.length; x++) {
-			// t = i[0];
 			help = i[x];
-			if (t.length() != help.length())
-				throw new IllegalArgumentException("wrong data in method argument");
+			if (t.length() != help.length()) // checking if the field got the same number elements of each row
+				throw new IllegalArgumentException(
+						"wrong data in method argument, cannot create a field from diffrent numbers of elements in rows");
 		}
-		tab = new int[rows][columns];
-		// System.out.println(columns);
-		int helpz = 0;
-		for (int x = 0; x < i.length; x++) {
+		tab = new int[rows][columns]; // creating a two dimension int array
+		int helpTemp = 0;
+		for (int x = 0; x < i.length; x++) { // loop through all rows
 			t = i[x];
-			helpz = 0;
-			for (char c : t.toCharArray()) {
-				// System.out.println(helpz);
+			helpTemp = 0;
+			for (char c : t.toCharArray()) { // this loop are checking all elements - loop accept only '*' and '.'
 				if (c != '*' && c != '.') {
-					throw new IllegalArgumentException("wrong data in method argument");
+					throw new IllegalArgumentException("wrong data in method argument, check input data");
 				}
-				if (c == '*') {
-					tab[x][helpz] = 9;
+				if (c == '*') { // Getting data into a int array. Mine in that array is number 9 and empty field
+								// is 0
+					tab[x][helpTemp] = 9;
 				}
 
 				if (c == '.') {
-					tab[x][helpz] = 0;
+					tab[x][helpTemp] = 0;
 				}
-				helpz++;
+				helpTemp++;
 			}
 
 		}
-
-		// System.out.println(tab[2][3]);
 		initialized = true;
 	}
 
 	public String getHintField() throws IllegalStateException {
-		String n = "", p = "";
+		String n = "";
 		Scanner scan = new Scanner(System.in);
-		n = scan.next();
-
-		setMineField(n);
+		n = scan.next(); // getting input data
+		scan.close();
+		setMineField(n); // initializing setMineField
 
 		if (initialized == false) {
 			throw new IllegalStateException("setMineField was not initalized");
 		}
+		// we nned to get through all elements and search mine
 		for (int x = 0; x < rows; x++) {
 			for (int y = 0; y < columns; y++) {
-				// System.out.println(x + " " + y);
 				if (tab[x][y] == 9) {
-					for (int ii = x - 1; ii <= x + 1; ii++) {
-						// System.out.println(ii);
-						if (ii >= 0 && ii <= rows - 1) {
-
-							for (int jj = y - 1; jj <= y + 1; jj++) {
-								// System.out.println(ii + " " + jj + " " + rows + " " + columns);
-								if (jj >= 0 && jj <= columns - 1) {
-									if (tab[ii][jj] != 9)
-										tab[ii][jj]++;
-									// System.out.println("x");
+					// when we got position of a mine we need to get through all elements thats
+					// adjacent to a mine
+					for (int xx = x - 1; xx <= x + 1; xx++) {
+						if (xx >= 0 && xx <= (rows - 1)) { // checking if we not out of rows index
+							for (int yy = y - 1; yy <= y + 1; yy++) {
+								if (yy >= 0 && yy <= (columns - 1)) { // checking if we not out of columns index
+									if (tab[xx][yy] != 9) // we add ++ only to a non-mine field adjacent to a mine
+										tab[xx][yy]++;
 								}
 							}
-
 						}
 					}
 				}
 			}
 		}
 
-		// String[] fre = new String[rows * columns];
-		String fre = "";
-		int yui = 0;
+		String fstring = ""; // creating final string
 		for (int x = 0; x < rows; x++) {
-			for (int y = 0; y < columns; y++) {
-				yui = tab[x][y];
-				fre = fre + String.valueOf(yui);
+			for (int y = 0; y < columns; y++) { // All elements in the array will be added to a simple String
+				fstring += String.valueOf(tab[x][y]);
 			}
-			fre = fre + "\n";
+			fstring += "\n";
 		}
 
-		System.out.println(fre.replace('9', '*'));
-
-		/*
-		 * String tab1 = Arrays.toString(tab); System.out.println(tab1);
-		 */
-
-		// String[] i = n.split("(?<!\\\\)\\\\n");
-		// String str = String.join("\n", i).replace("\n", "");
-
-		// System.out.println(str);
-
-		/*
-		 * for (int k = 0; k < i.length; k++) { p = i[k]; //System.out.println(p[k]);
-		 * for (char c : p.toCharArray()) {
-		 * 
-		 * }
-		 * 
-		 * }
-		 */
-
-		String mineField1 = "aaa";
-		return mineField1;
+		return fstring.replace('9', '*');
 	}
 
 }
